@@ -32,7 +32,7 @@ const Contract = () => {
 
 	const renderContainer = () => (
 		<div className="flex flex-col items-center justify-center ">
-			<img src="/fondo_landing_logo.jpg" alt="logo" className='w-[50%]' />
+			<img src="/fondo_landing_logo.png" alt="logo" className='w-[50%]' />
 			<form onSubmit={(e) => checkContract(e)}>
 				<div className='flex mt-2 text-4xl justify-center gap-2'>
 					<button className='text-right'> - </button>
