@@ -18,8 +18,8 @@ const Contract = () => {
 			let abi = JSON.parse(JSON.stringify((ABI)))
 			const provider = new ethers.providers.Web3Provider(ethereum)
 			const signer = provider.getSigner()
+			console.log("chainid", provider.getNetwork());
 			const contract = new ethers.Contract(contract_address, abi, signer);
-			//console.log("Going to add these methods to frontend with clickable buttons soon, if you would like to work on this do contribute on GitHub!")
 			const gasPrice = await provider.getFeeData()
 			let price = await contract.price();
 			await contract.mint(id,amount,{value: price,gasPrice: gasPrice.gasPrice });
