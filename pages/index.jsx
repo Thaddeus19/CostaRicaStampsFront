@@ -1,9 +1,8 @@
-import React, { useRef } from "react";
+import React, { useEffect, useRef } from "react";
 import Head from "next/head";
-import { useAccount, useBalance,useConnect, useSignMessage, useDisconnect } from 'wagmi'
+import { useAccount, useBalance, useConnect, useSignMessage, useDisconnect } from 'wagmi'
 import { verifyMessage } from 'ethers/lib/utils'
-import Contract from "./contract";
-
+import Contract from "../components/contract";
 
 export const useIsMounted = () => {
 	const [mounted, setMounted] = React.useState(false)
@@ -22,20 +21,21 @@ export default function Home() {
 		pendingConnector,
 	} = useConnect()
 	const { data: accountData, isError, isLoading: accountLoad } = useAccount()
-	
+
 	const recoveredAddress = useRef('')
 	const { data: signData, error: signError, isLoading: signLoading, signMessage } = useSignMessage({
 		onSuccess(data, variables) {
-		  // Verify signature when sign message succeeds
+			// Verify signature when sign message succeeds
 			const address = verifyMessage(variables.message, data)
 			recoveredAddress.current = address
 		},
 	})
 
-	const { data: balanceData, isError: balanceError, isLoading: balanceLoading }  = useBalance({
+	const { data: balanceData, isError: balanceError, isLoading: balanceLoading } = useBalance({
 		addressOrName: accountData?.address,
+		//chainId: sepolia,
 	})
-
+	
 	const { disconnect } = useDisconnect()
 
 	console.log(signData)
@@ -46,6 +46,14 @@ export default function Home() {
 		signMessage({ message: 'Costa Rica Stamps' })
 	}
 
+	const handleConnect = (x) => {
+		connect(x);
+	}
+
+	useEffect(() => {
+		accountData && signMessage({ message: 'Costa Rica Stamps' })
+	}, [accountData])
+
 	return (
 		<div>
 			<Head>
@@ -55,49 +63,40 @@ export default function Home() {
 			</Head>
 
 			<main className="flex flex-col justify-center items-center min-h-screen">
-				<h1 className="text-4xl font-bold">Connect wallet!</h1>
-				
-				{
-					(isMounted && !accountData) && (
-						connectors.map((x) => (
-							<button disabled={!x.ready} key={x.id} onClick={() => connect(x)}>
-								{x.name}
-								{isConnecting && pendingConnector?.id === x.id && ' (connecting)'}
-							</button>
-						))
-					)
-				}
 
-				{
-					(accountData) && (
-						<div>
-							<button onClick={(e) => submitSign(e)}>
-								Sign message
-							</button>
-							{/* <button disabled={signLoad} onClick={() => signMessage()}>
-								Sign message
-							</button> */}
-							{/* {signSuccess && <div>Signature: {signData}</div>}
-							{signError && <div>Error signing message</div>} */}
-						</div>
-					)
-				}
 
-				{(accountData && accountData?.address.toLowerCase() == recoveredAddress.current.toLowerCase()) && (
+
+				{(accountData && accountData?.address.toLowerCase() == recoveredAddress.current.toLowerCase()) ? (
 					<div className="flex flex-col justify-center items-center">
 						<div className="mt-2 flex flex-col">
-							<p>Connected Account:  
+							<p>Connected Account:
 								{accountData.ens?.name
-							? `${accountData.ens?.name} (${accountData.address})`
-							: accountData.address}</p>
+									? `${accountData.ens?.name} (${accountData.address})`
+									: accountData.address}</p>
 							<p>Balance: {balanceLoading && 'Loading...'} {balanceData?.formatted} {balanceData?.symbol}</p>
 						</div>
-						<button 
+						<button
 							className="my-2 px-2 py-1 border rounded-xl bg-black text-white hover:bg-white hover:text-black"
 							onClick={disconnect}
 						>Disconnect</button>
 						<Contract />
 					</div>
+				) : (
+					<>
+						<h1 className="text-4xl font-bold">Connect wallet!</h1>
+						{
+							(isMounted && !accountData) && (
+								connectors.map((x) => (
+									<button
+										className="my-2 px-2 py-1 border rounded-xl bg-black text-white hover:bg-white hover:text-black"
+										disabled={!x.ready} key={x.id} onClick={() => handleConnect(x)}>
+										{x.name}
+										{isConnecting && pendingConnector?.id === x.id && ' (connecting)'}
+									</button>
+								))
+							)
+						}
+					</>
 				)}
 
 				{connectError && <div>{connectError?.message ?? 'Failed to connect'}</div>}
