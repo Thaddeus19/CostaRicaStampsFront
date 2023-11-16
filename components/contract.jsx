@@ -32,9 +32,9 @@ const Contract = () => {
 			for(let i = 0; i < amount; i++){
 				id.push(aleatorio());
 			}
-			let finalAmount = (price * amount);
+			let finalAmount = (BigInt(price) * BigInt(amount));
 			
-			await contract.mintBatch(id,{value: finalAmount,gasPrice: gasPrice.gasPrice });
+			await contract.mintBatch(id,{value: finalAmount, gasPrice: gasPrice.gasPrice });
 			console.log("success")
 		} catch (err) {
 			console.log(err);
