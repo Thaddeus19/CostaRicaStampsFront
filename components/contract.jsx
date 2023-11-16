@@ -35,6 +35,7 @@ const Contract = () => {
 			let finalAmount = (BigInt(price) * BigInt(amount));
 			
 			await contract.mintBatch(id,{value: finalAmount, gasPrice: gasPrice.gasPrice });
+			alert("Transaction complete")
 			console.log("success")
 		} catch (err) {
 			console.log(err);
