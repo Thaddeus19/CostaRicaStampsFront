@@ -14,7 +14,7 @@ const Contract = () => {
 		return inferior + aleatorio;
 	}
 
-	const CONTRACT_ADDRESS = "0xd5620808f1AfF21FC502a28d3d3DF81A2EA82CC2";
+	const CONTRACT_ADDRESS = "0xC1C03F8bBd74c42c6A5480066C5230Ea7ABa9D57";
 	const ABI = abi;
 	const [amount, setAmount] = useState(0)
 
