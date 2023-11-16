@@ -5,24 +5,36 @@ import { ethers } from 'ethers';
 
 const Contract = () => {
 
-	const CONTRACT_ADDRESS = "0x879c0991c94A65e57cD589e877fe56Af26F4E7A6";
+	function aleatorio() {
+		const inferior = 1; 
+		const superior = 12;
+		var numPosibilidades = superior - inferior;
+		var aleatorio = Math.random() * (numPosibilidades + 1);
+		aleatorio = Math.floor(aleatorio);
+		return inferior + aleatorio;
+	}
+
+	const CONTRACT_ADDRESS = "0xd5620808f1AfF21FC502a28d3d3DF81A2EA82CC2";
 	const ABI = abi;
 	const [amount, setAmount] = useState(0)
-	const id = process.env.NEXT_PUBLIC_ID
 
 	const checkContract = async (e) => {
 		try {
 			e.preventDefault();
-
+			let id = [];
 			let contract_address = CONTRACT_ADDRESS;
 			let abi = JSON.parse(JSON.stringify((ABI)))
 			const provider = new ethers.providers.Web3Provider(ethereum)
 			const signer = provider.getSigner()
-			console.log("chainid", provider.getNetwork());
 			const contract = new ethers.Contract(contract_address, abi, signer);
 			const gasPrice = await provider.getFeeData()
 			let price = await contract.price();
-			await contract.mint(id,amount,{value: price,gasPrice: gasPrice.gasPrice });
+			for(let i = 0; i < amount; i++){
+				id.push(aleatorio());
+			}
+			let finalAmount = (price * amount);
+			
+			await contract.mintBatch(id,{value: finalAmount,gasPrice: gasPrice.gasPrice });
 			console.log("success")
 		} catch (err) {
 			console.log(err);
@@ -39,7 +51,7 @@ const Contract = () => {
 					<button type='button' onClick={() => setAmount(prev => prev + 1)}> + </button>
 				</div>
 				<button className="my-2 px-2 py-1 border rounded-xl bg-black text-white hover:bg-white hover:text-black" type="submit">
-					MINT PRICE IS 0.2 ETH X 2 STAMPS
+					MINT PRICE IS 0.1 ETH X STAMPS
 				</button>
 			</form>
 		</div>

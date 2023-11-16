@@ -4,6 +4,7 @@ import { useAccount, useBalance, useConnect, useSignMessage, useDisconnect } fro
 import { verifyMessage } from 'ethers/lib/utils'
 import Contract from "../components/contract";
 
+
 export const useIsMounted = () => {
 	const [mounted, setMounted] = React.useState(false)
 	React.useEffect(() => setMounted(true), [])
