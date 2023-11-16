@@ -34,8 +34,9 @@ export default function Home() {
 
 	const { data: balanceData, isError: balanceError, isLoading: balanceLoading } = useBalance({
 		addressOrName: accountData?.address,
+		chainId: 1,
 	})
-
+	
 	const { disconnect } = useDisconnect()
 
 	console.log(signData)

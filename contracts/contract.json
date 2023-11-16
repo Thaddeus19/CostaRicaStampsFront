@@ -8,7 +8,12 @@
             },
             {
                 "internalType": "uint256",
-                "name": "_maxsupply",
+                "name": "_maxSupply",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "_maxDropSupply",
                 "type": "uint256"
             },
             {
@@ -164,6 +169,17 @@
         "type": "error"
     },
     {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "id",
+                "type": "uint256"
+            }
+        ],
+        "name": "airdropReached",
+        "type": "error"
+    },
+    {
         "inputs": [],
         "name": "alreadyDefined",
         "type": "error"
@@ -175,7 +191,22 @@
     },
     {
         "inputs": [],
+        "name": "failSafeCast",
+        "type": "error"
+    },
+    {
+        "inputs": [],
+        "name": "freeMintClose",
+        "type": "error"
+    },
+    {
+        "inputs": [],
         "name": "invalidId",
+        "type": "error"
+    },
+    {
+        "inputs": [],
+        "name": "invalidSupply",
         "type": "error"
     },
     {
@@ -186,6 +217,16 @@
     {
         "inputs": [],
         "name": "notAdmin",
+        "type": "error"
+    },
+    {
+        "inputs": [],
+        "name": "notAuth",
+        "type": "error"
+    },
+    {
+        "inputs": [],
+        "name": "notMinter",
         "type": "error"
     },
     {
@@ -398,7 +439,33 @@
     },
     {
         "inputs": [],
+        "name": "AIRDROP_ROLE",
+        "outputs": [
+            {
+                "internalType": "bytes32",
+                "name": "",
+                "type": "bytes32"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
         "name": "DEFAULT_ADMIN_ROLE",
+        "outputs": [
+            {
+                "internalType": "bytes32",
+                "name": "",
+                "type": "bytes32"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "MINTER_ROLE",
         "outputs": [
             {
                 "internalType": "bytes32",
@@ -455,6 +522,24 @@
             }
         ],
         "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "id",
+                "type": "uint256"
+            },
+            {
+                "internalType": "address",
+                "name": "user",
+                "type": "address"
+            }
+        ],
+        "name": "freeMint",
+        "outputs": [],
+        "stateMutability": "nonpayable",
         "type": "function"
     },
     {
@@ -530,6 +615,29 @@
             }
         ],
         "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "user",
+                "type": "address"
+            },
+            {
+                "internalType": "uint256[]",
+                "name": "id",
+                "type": "uint256[]"
+            },
+            {
+                "internalType": "uint256[]",
+                "name": "values",
+                "type": "uint256[]"
+            }
+        ],
+        "name": "gifts",
+        "outputs": [],
+        "stateMutability": "nonpayable",
         "type": "function"
     },
     {
@@ -612,6 +720,19 @@
             }
         ],
         "name": "mint",
+        "outputs": [],
+        "stateMutability": "payable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256[]",
+                "name": "id",
+                "type": "uint256[]"
+            }
+        ],
+        "name": "mintBatch",
         "outputs": [],
         "stateMutability": "payable",
         "type": "function"
@@ -848,6 +969,11 @@
                 "type": "uint256"
             },
             {
+                "internalType": "uint256",
+                "name": "_maxDropSupply",
+                "type": "uint256"
+            },
+            {
                 "internalType": "string",
                 "name": "_tokenURI",
                 "type": "string"
@@ -914,6 +1040,24 @@
             }
         ],
         "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "_id",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "_maxDropSupply",
+                "type": "uint256"
+            }
+        ],
+        "name": "updateDropSupply",
+        "outputs": [],
+        "stateMutability": "nonpayable",
         "type": "function"
     },
     {
