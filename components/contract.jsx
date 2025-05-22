@@ -1,7 +1,9 @@
 import React, { useRef, useState } from 'react'
 import abi from '../contracts/contract.json'
-
+import dotenv from "dotenv";
 import { ethers } from 'ethers';
+
+dotenv.config();
 
 const Contract = () => {
 
@@ -14,9 +16,9 @@ const Contract = () => {
 		return inferior + aleatorio;
 	}
 
-	const CONTRACT_ADDRESS = "0xC1C03F8bBd74c42c6A5480066C5230Ea7ABa9D57";
+	const CONTRACT_ADDRESS = process.env.NEXT_PUBLIC_CONTRACT_ADDRESS;
 	const ABI = abi;
-	const [amount, setAmount] = useState(2)
+	const [amount, setAmount] = useState(1)
 
 	const checkContract = async (e) => {
 		try {
@@ -34,7 +36,7 @@ const Contract = () => {
 			}
 			let finalAmount = (BigInt(price) * BigInt(amount));
 			
-			const tx = await contract.mintBatch(id,{value: finalAmount, gasPrice: gasPrice.gasPrice });
+			const tx = await contract.mintBatch(id,{value: finalAmount, gasPrice: gasPrice.gasPrice, gasLimit: 22000000 });
 			if(tx){
 				await tx.wait();
 				alert("Transaction complete")
@@ -55,7 +57,7 @@ const Contract = () => {
 					<button type='button' onClick={() => setAmount(prev => prev + 1)}> + </button>
 				</div>
 				<button className="my-2 px-2 py-1 border rounded-xl bg-black text-white hover:bg-white hover:text-black" type="submit">
-					MINT PRICE IS 0.1 ETH X 2 STAMPS
+					MINT PRICE IS 0.1 ETH
 				</button>
 			</form>
 		</div>
