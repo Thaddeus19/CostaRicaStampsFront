@@ -3,3 +3,4 @@ bin
 .next
 .DS_Store
 .env
+.env.development
