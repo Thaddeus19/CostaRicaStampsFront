@@ -1,4 +1,4 @@
-import React, { useRef, useState, useEffect } from 'react'
+import React, { useState, useEffect } from 'react'
 import abi from '../contracts/contract.json'
 import dotenv from "dotenv";
 import { ethers } from 'ethers';
@@ -51,7 +51,7 @@ const Contract = () => {
 			let abi = JSON.parse(JSON.stringify((ABI)))
 
 			const contract = new ethers.Contract(contract_address, abi, signer);
-			const gasPrice = await provider.getFeeData()
+			//const gasPrice = await provider.getFeeData()
 
 			for (let i = 0; i < 12; i++) {
 				let balance = await contract.balanceOf(signer.getAddress(), i);
@@ -62,20 +62,21 @@ const Contract = () => {
 			console.log("totalBalance", totalBalance);
 
 			if (totalBalance.length != 0) {
-				 setError('You can only mint 1 NFT');
+				setError('You can only mint 1 NFT');
 			} else {
-			for (let i = 0; i < amount; i++) {
-				id.push(aleatorio());
-			}
-			let finalAmount = (BigInt(price) * BigInt(amount));
+				for (let i = 0; i < amount; i++) {
+					id.push(aleatorio());
+				}
+				let finalAmount = (BigInt(price) * BigInt(amount));
 
-			const tx = await contract.mintBatch(id, { value: finalAmount, gasPrice: gasPrice.gasPrice, gasLimit: 22000000 });
-			if (tx) {
-				await tx.wait();
-				alert("Transaction complete")
-				console.log("success")
+				//const tx = await contract.mintBatch(id, { value: finalAmount, gasPrice: gasPrice.gasPrice, gasLimit: 22000000 });
+				const tx = await contract.mint(id[0], 1, { value: finalAmount });
+				if (tx) {
+					await tx.wait();
+					alert("Transaction complete")
+					console.log("success")
+				}
 			}
-		}
 		} catch (err) {
 			console.log(err);
 		}
@@ -89,11 +90,11 @@ const Contract = () => {
 						⚠️ {error}
 					</div>
 				)}
-				</div>
-				<img src="/fondo_landing_logo.png" alt="logo" className='w-[50%]' />
-				<form onSubmit={(e) => checkContract(e)}>
-					<div className="flex mt-2 text-4xl justify-center gap-2">
-						{/* <button
+			</div>
+			<img src="/fondo_landing_logo.png" alt="logo" className='w-[50%]' />
+			<form onSubmit={(e) => checkContract(e)}>
+				<div className="flex mt-2 text-4xl justify-center gap-2">
+					{/* <button
 							type="button"
 							onClick={() => setAmount((prev) => (prev > 1 ? prev - 1 : 1))}
 							className="text-right"
@@ -101,41 +102,41 @@ const Contract = () => {
 							-
 						</button> */}
 
-						<input
-							readOnly
-							type="number"
-							className="w-24 border text-center"
-							value={amount}
-						/>
+					<input
+						readOnly
+						type="number"
+						className="w-24 border text-center"
+						value={amount}
+					/>
 
-						{/* <button
+					{/* <button
 							type="button"
 							onClick={() => setAmount((prev) => prev + 1)}
 						>
 							+
 						</button> */}
-					</div>
+				</div>
 
-					<div className="mt-4 text-center">
-						<h1 className="text-2xl font-semibold">Price: {parseFloat(ethers.utils.formatEther(price))} ETH</h1>
-					</div>
-					<div className="flex justify-center">
+				<div className="mt-4 text-center">
+					<h1 className="text-2xl font-semibold">Price: {parseFloat(ethers.utils.formatEther(price))} ETH</h1>
+				</div>
+				<div className="flex justify-center">
 					<button
 						className="my-4 px-4 py-2 border rounded-xl bg-black text-white hover:bg-white hover:text-black transition"
 						type="submit"
 					>
 						MINT
 					</button>
-					</div>
-				</form>
-			</div>
-			);
+				</div>
+			</form>
+		</div>
+	);
 
-			return (
-			<div>
-				{renderContainer()}
-			</div>
-			)
+	return (
+		<div>
+			{renderContainer()}
+		</div>
+	)
 }
 
-			export default Contract
+export default Contract
